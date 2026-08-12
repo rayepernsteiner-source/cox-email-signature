@@ -3,740 +3,996 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 <title>Cox & Co. Email Signature Generator</title>
 
 <style>
-  :root {
-    --red: #ed1c24;
-    --ink: #151722;
-    --muted: #667085;
-    --line: #d8dde3;
-    --panel: #ffffff;
-    --bg: #f7f8fa;
-  }
 
-  * {
-    box-sizing: border-box;
-  }
+:root {
+  --red: #ed1c24;
+  --ink: #151722;
+  --muted: #667085;
+  --line: #d8dde3;
+  --panel: #ffffff;
+  --bg: #f7f8fa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 28px;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+
+.topbar-logo {
+  width: 330px;
+  max-width: 42vw;
+  height: auto;
+  display: block;
+}
+
+.topbar .divider {
+  width: 2px;
+  height: 42px;
+  background: var(--red);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 28px;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.intro {
+  font-size: 17px;
+  color: #475467;
+  margin-bottom: 26px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 22px;
+}
+
+label {
+  display: block;
+  margin-bottom: 18px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  padding: 13px 14px;
+  border: 1px solid #cfd5dc;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 400;
+  color: var(--ink);
+  background: #fff;
+}
+
+button {
+  width: 100%;
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--red);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.help {
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--muted);
+}
+
+.preview-wrap {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.signature-shell {
+  background: #fff;
+  padding: 30px 34px;
+}
+
+#status {
+  min-height: 18px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
 
   body {
-    margin: 0;
-    padding: 28px;
-    font-family: Arial, Helvetica, sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-  }
-
-  .topbar {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 24px;
-  }
-
-  .topbar .divider {
-    width: 2px;
-    height: 42px;
-    background: var(--red);
-  }
-
-  .topbar h1 {
-    margin: 0;
-    font-size: 28px;
-    letter-spacing: 1px;
-    font-weight: 700;
-  }
-
-  .intro {
-    font-size: 17px;
-    color: #475467;
-    margin-bottom: 26px;
+    padding: 18px;
   }
 
   .layout {
-    display: grid;
-    grid-template-columns: 400px 1fr;
-    gap: 24px;
-    align-items: stretch;
+    grid-template-columns: 1fr;
   }
 
-  .panel {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 22px;
+  .topbar {
+    align-items: flex-start;
   }
 
-  label {
-    display: block;
-    margin-bottom: 18px;
-    font-size: 15px;
-    font-weight: 700;
+  .topbar h1 {
+    font-size: 22px;
   }
 
-  input {
-    display: block;
-    width: 100%;
-    margin-top: 7px;
-    padding: 13px 14px;
-    border: 1px solid #cfd5dc;
-    border-radius: 8px;
-    font: inherit;
-    font-weight: 400;
-    color: var(--ink);
-    background: #fff;
-  }
+}
 
-  button {
-    width: 100%;
-    padding: 14px 18px;
-    border: 0;
-    border-radius: 8px;
-    background: var(--red);
-    color: #fff;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  .help {
-    margin-top: 16px;
-    font-size: 14px;
-    line-height: 1.5;
-    text-align: center;
-    color: var(--muted);
-  }
-
-  .preview-wrap {
-    min-height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow-x: auto;
-  }
-
-  .signature-shell {
-    background: #fff;
-    padding: 30px 34px;
-  }
-
-  #status {
-    min-height: 18px;
-    margin-top: 10px;
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  @media (max-width: 900px) {
-    body {
-      padding: 18px;
-    }
-
-    .layout {
-      grid-template-columns: 1fr;
-    }
-
-    .topbar {
-      align-items: flex-start;
-    }
-
-    .topbar h1 {
-      font-size: 22px;
-    }
-  }
 </style>
+
 </head>
 
 <body>
 
+
+<!-- HEADER -->
+
 <div class="topbar">
-  <h1>COX & CO.</h1>
+
+  <!-- KEEP YOUR EXISTING COX & CO. LOGO IMAGE HERE -->
+  <img
+    src="YOUR-EXISTING-LOGO-SOURCE-HERE"
+    alt="Cox & Co."
+    class="topbar-logo"
+  >
+
   <div class="divider"></div>
+
   <h1>EMAIL SIGNATURE GENERATOR</h1>
+
 </div>
+
 
 <div class="intro">
   Enter your information below to generate your Cox & Co. email signature.
 </div>
 
+
+
 <div class="layout">
 
-  <!-- EMPLOYEE FORM -->
-  <section class="panel">
 
-    <label>
-      Employee Name
-      <input id="name" value="Matthew Graeff" />
-    </label>
+<!-- ====================================== -->
+<!-- EMPLOYEE INFORMATION FORM -->
+<!-- ====================================== -->
 
-    <label>
-      Title
-      <input
-        id="title"
-        value="Sr. Project Manager | Field Operations"
-      />
-    </label>
+<section class="panel">
 
-    <label>
-      Phone
-      <input id="phone" value="404.418.9480" />
-    </label>
 
-    <button id="copyBtn" type="button">
-      COPY SIGNATURE
-    </button>
+<label>
 
-    <div id="status"></div>
+  Employee Name
 
-    <div class="help">
-      Click the button above to copy your signature.
-      Then paste it into your email signature settings.
-    </div>
+  <input
+    id="name"
+    value="Matthew Graeff"
+  />
 
-  </section>
+</label>
 
 
-  <!-- SIGNATURE PREVIEW -->
-  <section class="panel preview-wrap">
 
-    <div class="signature-shell">
+<label>
 
-      <table
-        id="signature"
-        cellpadding="0"
-        cellspacing="0"
-        border="0"
-        style="
-          border-collapse:collapse;
-          background:#ffffff;
-          font-family:Arial,Helvetica,sans-serif;
-          color:#151722;
-        "
-      >
+  Title
 
-        <tr>
+  <input
+    id="title"
+    value="Sr. Project Manager | Field Operations"
+  />
 
-          <!-- LEFT LOGO AREA -->
-          <td
-            style="
-              vertical-align:middle;
-              width:390px;
-              padding-right:34px;
-              border-right:2px solid #ed1c24;
-            "
-          >
+</label>
 
-            <div style="text-align:center;">
 
-              <!-- LOGO -->
-              <div
-                style="
-                  font-size:52px;
-                  font-weight:700;
-                  letter-spacing:-2px;
-                  line-height:1;
-                  color:#151722;
-                "
-              >
-                <div
-                  style="
-                    color:#ed1c24;
-                    font-size:56px;
-                    margin-bottom:5px;
-                  "
-                >
-                  C
-                </div>
 
-                COX<span style="font-weight:400;">&CO.</span>
+<label>
 
-              </div>
+  Phone
 
-              <div
-                style="
-                  margin:14px 0 0 0;
-                  border-top:2px solid #ed1c24;
-                "
-              ></div>
+  <input
+    id="phone"
+    value="404.418.9480"
+  />
 
-              <div
-                style="
-                  padding-top:12px;
-                  font-size:16px;
-                  font-weight:700;
-                  letter-spacing:5px;
-                  white-space:nowrap;
-                "
-              >
-                ATLANTA
-                <span style="color:#ed1c24;">|</span>
-                PHILADELPHIA
-              </div>
+</label>
 
-            </div>
 
-          </td>
 
+<button
+  id="copyBtn"
+  type="button"
+>
+  COPY SIGNATURE
+</button>
 
-          <!-- RIGHT INFORMATION AREA -->
-          <td
-            style="
-              vertical-align:top;
-              padding-left:36px;
-              width:560px;
-            "
-          >
 
-            <!-- SPACE ABOVE NAME -->
-            <div style="height:22px;"></div>
+<div id="status"></div>
 
 
-            <!-- NAME -->
-            <div
-              id="pName"
-              style="
-                font-size:31px;
-                font-weight:700;
-                letter-spacing:3px;
-                line-height:1.08;
-                color:#151722;
-                text-transform:uppercase;
-              "
-            >
-              MATTHEW GRAEFF
-            </div>
+<div class="help">
 
-
-            <!-- TITLE -->
-            <div
-              id="pTitle"
-              style="
-                margin-top:8px;
-                font-size:20px;
-                line-height:1.3;
-                color:#ed1c24;
-              "
-            >
-              Sr. Project Manager | Field Operations
-            </div>
-
-
-            <!-- PHONE -->
-            <div style="margin-top:28px;">
-
-              <table
-                cellpadding="0"
-                cellspacing="0"
-                border="0"
-                style="
-                  border-collapse:collapse;
-                  font-family:Arial,Helvetica,sans-serif;
-                "
-              >
-
-                <tr>
-
-                  <td
-                    style="
-                      vertical-align:middle;
-                      padding-right:12px;
-                    "
-                  >
-
-                    <!-- PHONE ICON -->
-                    <svg
-                      width="22"
-                      height="22"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill="#ed1c24"
-                        d="M6.62 10.79a15.47 15.47 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.25 1.01l-2.2 2.2z"
-                      />
-                    </svg>
-
-                  </td>
-
-                  <td
-                    style="
-                      font-size:20px;
-                      line-height:1.4;
-                    "
-                  >
-
-                    <a
-                      id="pPhone"
-                      href="tel:+14044189480"
-                      style="
-                        color:#151722;
-                        text-decoration:none;
-                      "
-                    >
-                      404.418.9480
-                    </a>
-
-                  </td>
-
-                </tr>
-
-              </table>
-
-            </div>
-
-
-            <!-- ATLANTA ADDRESS -->
-            <div
-              style="
-                margin-top:22px;
-                border-top:1px solid #cfd4da;
-                padding-top:18px;
-              "
-            >
-
-              <table cellpadding="0" cellspacing="0" border="0">
-
-                <tr>
-
-                  <td
-                    style="
-                      vertical-align:top;
-                      padding-right:16px;
-                    "
-                  >
-
-                    <!-- LOCATION ICON -->
-                    <svg
-                      width="22"
-                      height="28"
-                      viewBox="0 0 24 32"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill="#ed1c24"
-                        d="M12 0C5.4 0 0 5.4 0 12c0 8.6 12 20 12 20s12-11.4 12-20C24 5.4 18.6 0 12 0zm0 17.2A5.2 5.2 0 1 1 12 6.8a5.2 5.2 0 0 1 0 10.4z"
-                      />
-                    </svg>
-
-                  </td>
-
-                  <td
-                    style="
-                      font-size:17px;
-                      line-height:1.45;
-                      color:#151722;
-                    "
-                  >
-                    2727 Paces Ferry Road SE,
-                    Building 1, Suite 1200
-                    <br>
-                    Atlanta, GA 30339
-                  </td>
-
-                </tr>
-
-              </table>
-
-            </div>
-
-
-            <!-- PHILADELPHIA ADDRESS -->
-            <div
-              style="
-                margin-top:18px;
-                border-top:1px solid #cfd4da;
-                padding-top:18px;
-              "
-            >
-
-              <table cellpadding="0" cellspacing="0" border="0">
-
-                <tr>
-
-                  <td
-                    style="
-                      vertical-align:top;
-                      padding-right:16px;
-                    "
-                  >
-
-                    <svg
-                      width="22"
-                      height="28"
-                      viewBox="0 0 24 32"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill="#ed1c24"
-                        d="M12 0C5.4 0 0 5.4 0 12c0 8.6 12 20 12 20s12-11.4 12-20C24 5.4 18.6 0 12 0zm0 17.2A5.2 5.2 0 1 1 12 6.8a5.2 5.2 0 0 1 0 10.4z"
-                      />
-                    </svg>
-
-                  </td>
-
-                  <td
-                    style="
-                      font-size:17px;
-                      line-height:1.45;
-                      color:#151722;
-                    "
-                  >
-                    325 Sentry Parkway,
-                    Building 5 West, Suite 200
-                    <br>
-                    Blue Bell, PA 19422
-                  </td>
-
-                </tr>
-
-              </table>
-
-            </div>
-
-
-            <!-- WEBSITE -->
-            <div
-              style="
-                margin-top:18px;
-                border-top:1px solid #cfd4da;
-                padding-top:18px;
-              "
-            >
-
-              <table cellpadding="0" cellspacing="0" border="0">
-
-                <tr>
-
-                  <td
-                    style="
-                      vertical-align:middle;
-                      padding-right:16px;
-                    "
-                  >
-
-                    <!-- GLOBE ICON -->
-                    <svg
-                      width="23"
-                      height="23"
-                      viewBox="0 0 32 32"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-
-                      <circle
-                        cx="16"
-                        cy="16"
-                        r="14"
-                        fill="none"
-                        stroke="#ed1c24"
-                        stroke-width="2"
-                      />
-
-                      <path
-                        d="
-                          M2 16h28
-                          M16 2c4 4 6 9 6 14s-2 10-6 14
-                          M16 2c-4 4-6 9-6 14s2 10 6 14
-                          M5 9h22
-                          M5 23h22
-                        "
-                        fill="none"
-                        stroke="#ed1c24"
-                        stroke-width="1.6"
-                      />
-
-                    </svg>
-
-                  </td>
-
-                  <td style="font-size:18px;">
-
-                    <a
-                      href="https://cox-co.com/"
-                      target="_blank"
-                      style="
-                        color:#ed1c24;
-                        text-decoration:none;
-                      "
-                    >
-                      cox-co.com
-                    </a>
-
-                  </td>
-
-                </tr>
-
-              </table>
-
-            </div>
-
-
-            <!-- SOCIAL MEDIA -->
-            <div style="margin-top:18px;">
-
-              <table
-                cellpadding="0"
-                cellspacing="0"
-                border="0"
-                style="
-                  border-collapse:collapse;
-                  font-family:Arial,Helvetica,sans-serif;
-                "
-              >
-
-                <tr>
-
-                  <!-- INSTAGRAM -->
-                  <td style="padding-right:14px;">
-
-                    <a
-                      href="https://www.instagram.com/coxandco_/"
-                      target="_blank"
-                      style="text-decoration:none;"
-                    >
-
-                      <span
-                        style="
-                          display:inline-block;
-                          width:30px;
-                          height:30px;
-                          line-height:27px;
-                          text-align:center;
-                          border:2px solid #ed1c24;
-                          border-radius:8px;
-                          color:#ed1c24;
-                          font-size:11px;
-                          font-weight:700;
-                        "
-                      >
-                        IG
-                      </span>
-
-                    </a>
-
-                  </td>
-
-
-                  <!-- FACEBOOK -->
-                  <td style="padding-right:14px;">
-
-                    <a
-                      href="https://www.facebook.com/CoxCompany.GC/"
-                      target="_blank"
-                      style="text-decoration:none;"
-                    >
-
-                      <span
-                        style="
-                          display:inline-block;
-                          width:30px;
-                          height:30px;
-                          line-height:28px;
-                          text-align:center;
-                          border:2px solid #ed1c24;
-                          border-radius:50%;
-                          color:#ed1c24;
-                          font-size:19px;
-                          font-weight:700;
-                        "
-                      >
-                        f
-                      </span>
-
-                    </a>
-
-                  </td>
-
-
-                  <!-- LINKEDIN -->
-                  <td>
-
-                    <a
-                      href="https://www.linkedin.com/company/cox-company-llc/"
-                      target="_blank"
-                      style="text-decoration:none;"
-                    >
-
-                      <span
-                        style="
-                          display:inline-block;
-                          width:30px;
-                          height:30px;
-                          line-height:27px;
-                          text-align:center;
-                          border:2px solid #ed1c24;
-                          border-radius:5px;
-                          color:#ed1c24;
-                          font-size:14px;
-                          font-weight:700;
-                        "
-                      >
-                        in
-                      </span>
-
-                    </a>
-
-                  </td>
-
-                </tr>
-
-              </table>
-
-            </div>
-
-          </td>
-
-        </tr>
-
-      </table>
-
-    </div>
-
-  </section>
+  Click the button above to copy your signature.
+  Then paste it into your email signature settings.
 
 </div>
 
 
+</section>
+
+
+
+
+<!-- ====================================== -->
+<!-- SIGNATURE PREVIEW -->
+<!-- ====================================== -->
+
+<section class="panel preview-wrap">
+
+
+<div class="signature-shell">
+
+
+<table
+  id="signature"
+  cellpadding="0"
+  cellspacing="0"
+  border="0"
+  style="
+    border-collapse:collapse;
+    background:#ffffff;
+    font-family:Arial,Helvetica,sans-serif;
+    color:#151722;
+  "
+>
+
+
+<tr>
+
+
+
+<!-- ====================================== -->
+<!-- LEFT SIDE -->
+<!-- ====================================== -->
+
+<td
+  style="
+    vertical-align:middle;
+    width:390px;
+    padding-right:34px;
+    border-right:2px solid #ed1c24;
+  "
+>
+
+
+<div style="text-align:center;">
+
+
+<!-- KEEP THE EXISTING LOGO FROM YOUR GENERATOR -->
+
+<img
+  src="YOUR-EXISTING-LOGO-SOURCE-HERE"
+  alt="Cox & Co."
+  width="320"
+  style="
+    display:block;
+    width:320px;
+    max-width:320px;
+    height:auto;
+    margin:0 auto;
+    border:0;
+  "
+>
+
+
+<div
+  style="
+    margin:10px 0 0 0;
+    border-top:2px solid #ed1c24;
+  "
+></div>
+
+
+<div
+  style="
+    padding-top:12px;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:5px;
+    white-space:nowrap;
+  "
+>
+
+  ATLANTA
+
+  <span style="color:#ed1c24;">
+    |
+  </span>
+
+  PHILADELPHIA
+
+</div>
+
+
+</div>
+
+
+</td>
+
+
+
+
+<!-- ====================================== -->
+<!-- RIGHT SIDE -->
+<!-- ====================================== -->
+
+<td
+  style="
+    vertical-align:top;
+    padding-left:36px;
+    width:560px;
+  "
+>
+
+
+<!-- EXTRA SPACE ABOVE NAME -->
+
+<div style="height:22px;"></div>
+
+
+
+<!-- EMPLOYEE NAME -->
+
+<div
+  id="pName"
+  style="
+    font-size:31px;
+    font-weight:700;
+    letter-spacing:3px;
+    line-height:1.08;
+    color:#151722;
+    text-transform:uppercase;
+  "
+>
+
+  MATTHEW GRAEFF
+
+</div>
+
+
+
+<!-- TITLE -->
+
+<div
+  id="pTitle"
+  style="
+    margin-top:8px;
+    font-size:20px;
+    line-height:1.3;
+    color:#ed1c24;
+  "
+>
+
+  Sr. Project Manager | Field Operations
+
+</div>
+
+
+
+
+<!-- ====================================== -->
+<!-- PHONE -->
+<!-- ====================================== -->
+
+<div style="margin-top:28px;">
+
+
+<table
+  cellpadding="0"
+  cellspacing="0"
+  border="0"
+  style="
+    border-collapse:collapse;
+    font-family:Arial,Helvetica,sans-serif;
+  "
+>
+
+
+<tr>
+
+
+<td
+  style="
+    vertical-align:middle;
+    padding-right:12px;
+  "
+>
+
+
+<!-- PHONE ICON -->
+
+<span
+  style="
+    color:#ed1c24;
+    font-size:23px;
+    line-height:1;
+  "
+>
+  ☎
+</span>
+
+
+</td>
+
+
+
+<td
+  style="
+    font-size:20px;
+    line-height:1.4;
+  "
+>
+
+
+<a
+  id="pPhone"
+  href="tel:+14044189480"
+  style="
+    color:#151722;
+    text-decoration:none;
+  "
+>
+
+  404.418.9480
+
+</a>
+
+
+</td>
+
+
+</tr>
+
+
+</table>
+
+
+</div>
+
+
+
+
+<!-- ====================================== -->
+<!-- ATLANTA ADDRESS -->
+<!-- ====================================== -->
+
+<div
+  style="
+    margin-top:22px;
+    border-top:1px solid #cfd4da;
+    padding-top:18px;
+  "
+>
+
+
+<table
+  cellpadding="0"
+  cellspacing="0"
+  border="0"
+  style="
+    border-collapse:collapse;
+    font-family:Arial,Helvetica,sans-serif;
+  "
+>
+
+
+<tr>
+
+
+<td
+  style="
+    vertical-align:top;
+    padding-right:16px;
+  "
+>
+
+
+<span
+  style="
+    color:#ed1c24;
+    font-size:25px;
+  "
+>
+  ●
+</span>
+
+
+</td>
+
+
+
+<td
+  style="
+    font-size:17px;
+    line-height:1.45;
+    color:#151722;
+  "
+>
+
+  2727 Paces Ferry Road SE, Building 1, Suite 1200
+
+  <br>
+
+  Atlanta, GA 30339
+
+</td>
+
+
+</tr>
+
+
+</table>
+
+
+</div>
+
+
+
+
+<!-- ====================================== -->
+<!-- PHILADELPHIA ADDRESS -->
+<!-- ====================================== -->
+
+<div
+  style="
+    margin-top:18px;
+    border-top:1px solid #cfd4da;
+    padding-top:18px;
+  "
+>
+
+
+<table
+  cellpadding="0"
+  cellspacing="0"
+  border="0"
+  style="
+    border-collapse:collapse;
+    font-family:Arial,Helvetica,sans-serif;
+  "
+>
+
+
+<tr>
+
+
+<td
+  style="
+    vertical-align:top;
+    padding-right:16px;
+  "
+>
+
+
+<span
+  style="
+    color:#ed1c24;
+    font-size:25px;
+  "
+>
+  ●
+</span>
+
+
+</td>
+
+
+
+<td
+  style="
+    font-size:17px;
+    line-height:1.45;
+    color:#151722;
+  "
+>
+
+  325 Sentry Parkway, Building 5 West, Suite 200
+
+  <br>
+
+  Blue Bell, PA 19422
+
+</td>
+
+
+</tr>
+
+
+</table>
+
+
+</div>
+
+
+
+
+<!-- ====================================== -->
+<!-- WEBSITE -->
+<!-- ====================================== -->
+
+<div
+  style="
+    margin-top:18px;
+    border-top:1px solid #cfd4da;
+    padding-top:18px;
+  "
+>
+
+
+<table
+  cellpadding="0"
+  cellspacing="0"
+  border="0"
+  style="
+    border-collapse:collapse;
+    font-family:Arial,Helvetica,sans-serif;
+  "
+>
+
+
+<tr>
+
+
+<td
+  style="
+    vertical-align:middle;
+    padding-right:16px;
+  "
+>
+
+
+<span
+  style="
+    color:#ed1c24;
+    font-size:22px;
+  "
+>
+  ◎
+</span>
+
+
+</td>
+
+
+
+<td
+  style="
+    font-size:18px;
+  "
+>
+
+
+<a
+  href="https://cox-co.com/"
+  target="_blank"
+  style="
+    color:#ed1c24;
+    text-decoration:none;
+  "
+>
+
+  cox-co.com
+
+</a>
+
+
+</td>
+
+
+</tr>
+
+
+</table>
+
+
+</div>
+
+
+
+
+<!-- ====================================== -->
+<!-- SOCIAL MEDIA -->
+<!-- AT VERY BOTTOM -->
+<!-- ====================================== -->
+
+<div
+  style="
+    margin-top:18px;
+  "
+>
+
+
+<table
+  cellpadding="0"
+  cellspacing="0"
+  border="0"
+  style="
+    border-collapse:collapse;
+    font-family:Arial,Helvetica,sans-serif;
+  "
+>
+
+
+<tr>
+
+
+
+<!-- INSTAGRAM -->
+
+<td
+  style="
+    padding-right:22px;
+    vertical-align:middle;
+  "
+>
+
+
+<a
+  href="https://www.instagram.com/coxandco_/"
+  target="_blank"
+  style="
+    text-decoration:none;
+  "
+>
+
+
+<img
+  src="https://rayepernsteiner-source.github.io/cox-email-signature/instagram.png"
+  width="27"
+  height="27"
+  alt="Instagram"
+  style="
+    display:block;
+    width:27px;
+    height:27px;
+    border:0;
+  "
+>
+
+
+</a>
+
+
+</td>
+
+
+
+
+<!-- FACEBOOK -->
+
+<td
+  style="
+    padding-right:22px;
+    vertical-align:middle;
+  "
+>
+
+
+<a
+  href="https://www.facebook.com/CoxCompany.GC/"
+  target="_blank"
+  style="
+    text-decoration:none;
+  "
+>
+
+
+<img
+  src="https://rayepernsteiner-source.github.io/cox-email-signature/facebook.png"
+  width="27"
+  height="27"
+  alt="Facebook"
+  style="
+    display:block;
+    width:27px;
+    height:27px;
+    border:0;
+  "
+>
+
+
+</a>
+
+
+</td>
+
+
+
+
+<!-- LINKEDIN -->
+
+<td
+  style="
+    vertical-align:middle;
+  "
+>
+
+
+<a
+  href="https://www.linkedin.com/company/cox-company-llc/"
+  target="_blank"
+  style="
+    text-decoration:none;
+  "
+>
+
+
+<img
+  src="https://rayepernsteiner-source.github.io/cox-email-signature/linkedin.png"
+  width="27"
+  height="27"
+  alt="LinkedIn"
+  style="
+    display:block;
+    width:27px;
+    height:27px;
+    border:0;
+  "
+>
+
+
+</a>
+
+
+</td>
+
+
+</tr>
+
+
+</table>
+
+
+</div>
+
+
+
+</td>
+
+
+</tr>
+
+
+</table>
+
+
+</div>
+
+
+</section>
+
+
+</div>
+
+
+
+
+<!-- ====================================== -->
+<!-- GENERATOR JAVASCRIPT -->
+<!-- ====================================== -->
+
 <script>
 
+
 const fields = {
-  name: document.getElementById("name"),
-  title: document.getElementById("title"),
-  phone: document.getElementById("phone")
+
+  name:
+    document.getElementById("name"),
+
+  title:
+    document.getElementById("title"),
+
+  phone:
+    document.getElementById("phone")
+
 };
+
 
 
 function phoneHref(value) {
 
-  const digits = value.replace(/\D/g, "");
+
+  const digits =
+    value.replace(/\D/g, "");
+
 
   if (!digits) {
+
     return "#";
+
   }
 
+
   const normalized =
+
     digits.length === 10
+
       ? "1" + digits
+
       : digits;
 
+
   return "tel:+" + normalized;
+
 }
+
 
 
 function updatePreview() {
 
-  document.getElementById("pName").textContent =
-    fields.name.value.toUpperCase();
 
-  document.getElementById("pTitle").textContent =
-    fields.title.value;
+  document
+    .getElementById("pName")
+    .textContent =
+
+      fields.name.value.toUpperCase();
+
+
+
+  document
+    .getElementById("pTitle")
+    .textContent =
+
+      fields.title.value;
+
+
 
   const phone =
     document.getElementById("pPhone");
 
+
   phone.textContent =
     fields.phone.value;
+
 
   phone.href =
     phoneHref(fields.phone.value);
@@ -744,60 +1000,112 @@ function updatePreview() {
 }
 
 
-Object.values(fields).forEach((field) => {
 
-  field.addEventListener(
-    "input",
-    updatePreview
-  );
-
-});
+Object
+  .values(fields)
+  .forEach((field) => {
 
 
-document
-  .getElementById("copyBtn")
-  .addEventListener("click", () => {
+    field.addEventListener(
 
-    const signature =
-      document.getElementById("signature");
+      "input",
 
-    const range =
-      document.createRange();
+      updatePreview
 
-    range.selectNode(signature);
+    );
 
-    const selection =
-      window.getSelection();
-
-    selection.removeAllRanges();
-    selection.addRange(range);
-
-    let copied = false;
-
-    try {
-
-      copied =
-        document.execCommand("copy");
-
-    } catch (e) {
-
-      copied = false;
-
-    }
-
-    selection.removeAllRanges();
-
-    document.getElementById("status").textContent =
-      copied
-        ? "Signature copied."
-        : "Select the signature preview manually, then copy it.";
 
   });
 
 
+
+
+document
+  .getElementById("copyBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+
+      const signature =
+
+        document.getElementById(
+          "signature"
+        );
+
+
+      const range =
+
+        document.createRange();
+
+
+      range.selectNode(
+        signature
+      );
+
+
+      const selection =
+
+        window.getSelection();
+
+
+      selection.removeAllRanges();
+
+
+      selection.addRange(
+        range
+      );
+
+
+      let copied = false;
+
+
+      try {
+
+
+        copied =
+
+          document.execCommand(
+            "copy"
+          );
+
+
+      }
+
+      catch (e) {
+
+
+        copied = false;
+
+
+      }
+
+
+      selection.removeAllRanges();
+
+
+
+      document
+        .getElementById("status")
+        .textContent =
+
+          copied
+
+            ? "Signature copied."
+
+            : "Select the signature preview manually, then copy it.";
+
+
+    }
+  );
+
+
+
 updatePreview();
 
+
 </script>
+
 
 </body>
 </html>
